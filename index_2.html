@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digitale Vaardigheden</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blauw: #1a73e8;
+      --blauw-licht: #e8f0fe;
+      --blauw-donker: #0d47a1;
+      --groen: #2e7d32;
+      --groen-licht: #e8f5e9;
+      --oranje: #e65100;
+      --oranje-licht: #fff3e0;
+      --paars: #6a1b9a;
+      --paars-licht: #f3e5f5;
+      --rood: #c62828;
+      --rood-licht: #ffebee;
+      --teal: #00695c;
+      --teal-licht: #e0f2f1;
+      --tekst: #1a1a1a;
+      --tekst-zacht: #555;
+      --rand: #e0e0e0;
+      --achtergrond: #f5f7fa;
+      --wit: #ffffff;
+      --nav-hoogte: 64px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: var(--achtergrond);
+      color: var(--tekst);
+      line-height: 1.7;
+    }
+
+    /* NAV */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--blauw-donker);
+      height: var(--nav-hoogte);
+      display: flex;
+      align-items: center;
+      padding: 0 2rem;
+      gap: 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: #fff;
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+
+    .nav-logo i { font-size: 1.6rem; }
+
+    .nav-links {
+      display: flex;
+      gap: 0.25rem;
+      list-style: none;
+      margin-left: auto;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+      font-size: 0.88rem;
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: background 0.15s, color 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .nav-links a:hover {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+    }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, #0d47a1 0%, #1565c0 60%, #1976d2 100%);
+      color: #fff;
+      text-align: center;
+      padding: 4rem 2rem 3.5rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 0.75rem;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      max-width: 560px;
+      margin: 0 auto 2rem;
+    }
+
+    .hero-badges {
+      display: flex;
+      gap: 0.6rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: 0.83rem;
+      color: #fff;
+    }
+
+    /* MODULES GRID */
+    .sectie-titel {
+      text-align: center;
+      padding: 2.5rem 1rem 1.5rem;
+      font-size: 1.05rem;
+      color: var(--tekst-zacht);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.5rem 3rem;
+    }
+
+    .module-kaart {
+      background: var(--wit);
+      border-radius: 16px;
+      border: 1.5px solid var(--rand);
+      overflow: hidden;
+      transition: transform 0.18s, box-shadow 0.18s;
+      cursor: default;
+    }
+
+    .module-kaart:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.1);
+    }
+
+    .module-banner {
+      width: 100%;
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid var(--rand);
+      overflow: hidden;
+    }
+
+    .module-banner svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    
+      padding: 1.5rem 1.5rem 1rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .module-icoon {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      flex-shrink: 0;
+    }
+
+    .module-nummer {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+
+    .module-titel {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--tekst);
+    }
+
+    .kaart-body {
+      padding: 0 1.5rem 1.5rem;
+    }
+
+    .module-beschrijving {
+      font-size: 0.93rem;
+      color: var(--tekst-zacht);
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+
+    .onderwerpen {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .onderwerpen li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.88rem;
+      color: var(--tekst-zacht);
+    }
+
+    .onderwerpen li i {
+      font-size: 0.95rem;
+      flex-shrink: 0;
+    }
+
+    .kaart-footer {
+      padding: 1rem 1.5rem;
+      border-top: 1px solid var(--rand);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .niveau-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 10px;
+    }
+
+    .start-knop {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      padding: 7px 16px;
+      border-radius: 8px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.15s;
+      color: #fff;
+    }
+
+    .start-knop:hover { opacity: 0.85; }
+
+    /* VOORTGANG BALK */
+    .voortgang-sectie {
+      background: var(--wit);
+      border-top: 1px solid var(--rand);
+      border-bottom: 1px solid var(--rand);
+      padding: 1.5rem 2rem;
+      text-align: center;
+    }
+
+    .voortgang-tekst {
+      font-size: 0.95rem;
+      color: var(--tekst-zacht);
+      margin-bottom: 0.75rem;
+    }
+
+    .voortgang-stappen {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .stap {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.83rem;
+      color: var(--tekst-zacht);
+    }
+
+    .stap-cirkel {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 2px solid var(--blauw);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--blauw);
+    }
+
+    .stap-lijn {
+      width: 30px;
+      height: 2px;
+      background: var(--rand);
+    }
+
+    /* FOOTER */
+    footer {
+      background: #1a1a2e;
+      color: rgba(255,255,255,0.7);
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: 0.88rem;
+    }
+
+    footer strong { color: #fff; }
+
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+      .modules-grid { grid-template-columns: 1fr; padding: 0 1rem 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVIGATIE -->
+<nav>
+  <a href="#" class="nav-logo">
+    <i class="ti ti-device-laptop" aria-hidden="true"></i>
+    Digitale Vaardigheden
+  </a>
+  <ul class="nav-links">
+    <li><a href="#module1"><i class="ti ti-device-desktop" aria-hidden="true"></i> Computer</a></li>
+    <li><a href="#module2"><i class="ti ti-wifi" aria-hidden="true"></i> Internet</a></li>
+    <li><a href="#module3"><i class="ti ti-mail" aria-hidden="true"></i> E-mail</a></li>
+    <li><a href="#module4"><i class="ti ti-shield" aria-hidden="true"></i> Veiligheid</a></li>
+    <li><a href="#module5"><i class="ti ti-building-bank" aria-hidden="true"></i> Overheid</a></li>
+    <li><a href="#module6"><i class="ti ti-device-mobile" aria-hidden="true"></i> Smartphone</a></li>
+    <li><a href="#module7"><i class="ti ti-mail-forward" aria-hidden="true"></i> Outlook</a></li>
+    <li><a href="#module8"><i class="ti ti-users" aria-hidden="true"></i> Teams</a></li>
+    <li><a href="#module9"><i class="ti ti-cloud" aria-hidden="true"></i> OneDrive</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <h1>🖥️ Digitale Vaardigheden</h1>
+  <p>Leer stap voor stap omgaan met de computer, internet en meer. Voor iedereen die digitaal sterker wil worden.</p>
+  <div class="hero-badges">
+    <span class="badge">✔ Beginnersvriendelijk</span>
+    <span class="badge">✔ 9 modules</span>
+    <span class="badge">✔ Gratis te volgen</span>
+  </div>
+</header>
+
+<!-- VOORTGANG -->
+<div class="voortgang-sectie">
+  <p class="voortgang-tekst">Uw leerpad — volg de modules op volgorde voor het beste resultaat</p>
+  <div class="voortgang-stappen">
+    <div class="stap"><div class="stap-cirkel">1</div> Computer</div>
+    <div class="stap-lijn"></div>
+    <div class="stap"><div class="stap-cirkel">2</div> Internet</div>
+    <div class="stap-lijn"></div>
+    <div class="stap"><div class="stap-cirkel">3</div> E-mail</div>
+    <div class="stap-lijn"></div>
+    <div class="stap"><div class="stap-cirkel">4</div> Veiligheid</div>
+    <div class="stap-lijn"></div>
+    <div class="stap"><div class="stap-cirkel">5</div> Overheid</div>
+    <div class="stap-lijn"></div>
+    <div class="stap"><div class="stap-cirkel">6</div> Smartphone</div>
+    <div class="stap-lijn"></div>
+    <div class="stap"><div class="stap-cirkel">7</div> Outlook</div>
+    <div class="stap-lijn"></div>
+    <div class="stap"><div class="stap-cirkel">8</div> Teams</div>
+    <div class="stap-lijn"></div>
+    <div class="stap"><div class="stap-cirkel">9</div> OneDrive</div>
+  </div>
+</div>
+
+<!-- MODULES -->
+<p class="sectie-titel">Kies een module om te beginnen</p>
+
+<main class="modules-grid">
+
+  <!-- MODULE 1: COMPUTER -->
+  <article class="module-kaart" id="module1">
+    <div class="module-banner"><svg viewBox="0 0 600 140" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="140" fill="#e8f0fe"/>
+  <rect x="200" y="15" width="200" height="130" rx="10" fill="#1a73e8"/>
+  <rect x="212" y="26" width="176" height="96" rx="6" fill="#c5d8fc"/>
+  <rect x="222" y="36" width="80" height="8" rx="4" fill="#1a73e8" opacity="0.6"/>
+  <rect x="222" y="50" width="130" height="6" rx="3" fill="#1a73e8" opacity="0.35"/>
+  <rect x="222" y="62" width="110" height="6" rx="3" fill="#1a73e8" opacity="0.35"/>
+  <rect x="222" y="74" width="120" height="6" rx="3" fill="#1a73e8" opacity="0.35"/>
+  <rect x="222" y="86" width="70" height="6" rx="3" fill="#1a73e8" opacity="0.35"/>
+  <rect x="288" y="144" width="24" height="12" rx="3" fill="#1565c0"/>
+  <rect x="266" y="155" width="68" height="7" rx="3" fill="#1565c0"/>
+  <rect x="155" y="100" width="52" height="35" rx="26" fill="#1565c0" opacity="0.75"/>
+  <line x1="181" y1="100" x2="181" y2="117" stroke="#c5d8fc" stroke-width="2"/>
+  <rect x="168" y="110" width="10" height="6" rx="3" fill="#c5d8fc" opacity="0.5"/>
+  <rect x="170" y="165" width="260" height="30" rx="7" fill="#1565c0" opacity="0.65"/>
+  <rect x="178" y="171" width="244" height="18" rx="4" fill="#1a73e8" opacity="0.2"/>
+  <rect x="183" y="174" width="14" height="5" rx="2" fill="#fff" opacity="0.7"/>
+  <rect x="201" y="174" width="14" height="5" rx="2" fill="#fff" opacity="0.7"/>
+  <rect x="219" y="174" width="14" height="5" rx="2" fill="#fff" opacity="0.7"/>
+  <rect x="237" y="174" width="14" height="5" rx="2" fill="#fff" opacity="0.7"/>
+  <rect x="255" y="174" width="14" height="5" rx="2" fill="#fff" opacity="0.7"/>
+  <rect x="273" y="174" width="14" height="5" rx="2" fill="#fff" opacity="0.7"/>
+  <rect x="291" y="174" width="14" height="5" rx="2" fill="#fff" opacity="0.7"/>
+  <rect x="309" y="174" width="14" height="5" rx="2" fill="#fff" opacity="0.7"/>
+  <rect x="327" y="174" width="14" height="5" rx="2" fill="#fff" opacity="0.7"/>
+  <rect x="345" y="174" width="22" height="5" rx="2" fill="#fff" opacity="0.7"/>
+  <rect x="190" y="182" width="14" height="5" rx="2" fill="#fff" opacity="0.5"/>
+  <rect x="208" y="182" width="14" height="5" rx="2" fill="#fff" opacity="0.5"/>
+  <rect x="226" y="182" width="14" height="5" rx="2" fill="#fff" opacity="0.5"/>
+  <rect x="244" y="182" width="14" height="5" rx="2" fill="#fff" opacity="0.5"/>
+  <rect x="262" y="182" width="14" height="5" rx="2" fill="#fff" opacity="0.5"/>
+  <rect x="280" y="182" width="14" height="5" rx="2" fill="#fff" opacity="0.5"/>
+  <rect x="298" y="182" width="14" height="5" rx="2" fill="#fff" opacity="0.5"/>
+  <rect x="316" y="182" width="30" height="5" rx="2" fill="#fff" opacity="0.5"/>
+</svg></div>
+    <div class="kaart-header">
+      <div class="module-icoon" style="background:#e8f0fe;">
+        <i class="ti ti-device-desktop" style="color:#1a73e8;" aria-hidden="true"></i>
+      </div>
+      <div>
+        <div class="module-nummer" style="color:#1a73e8;">Module 1</div>
+        <div class="module-titel">Computer</div>
+      </div>
+    </div>
+    <div class="kaart-body">
+      <p class="module-beschrijving">Maak kennis met de computer. Leer wat alle onderdelen doen en hoe u er mee werkt.</p>
+      <ul class="onderwerpen">
+        <li><i class="ti ti-check" style="color:#1a73e8;"></i> Onderdelen van de computer</li>
+        <li><i class="ti ti-check" style="color:#1a73e8;"></i> Muis en toetsenbord gebruiken</li>
+        <li><i class="ti ti-check" style="color:#1a73e8;"></i> Bestanden en mappen beheren</li>
+        <li><i class="ti ti-check" style="color:#1a73e8;"></i> Programma's openen en sluiten</li>
+      </ul>
+    </div>
+    <div class="kaart-footer">
+      <span class="niveau-label" style="background:#e8f0fe; color:#0d47a1;">Beginners</span>
+      <button class="start-knop" style="background:#1a73e8;" onclick="alert('Module 1: Computer wordt binnenkort geopend!')">
+        Start module <i class="ti ti-arrow-right"></i>
+      </button>
+    </div>
+  </article>
+
+  <!-- MODULE 2: INTERNET -->
+  <article class="module-kaart" id="module2">
+    <div class="module-banner"><svg viewBox="0 0 600 140" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="140" fill="#e0f2f1"/>
+  <circle cx="300" cy="70" r="52" fill="none" stroke="#00695c" stroke-width="3" opacity="0.25"/>
+  <circle cx="300" cy="70" r="38" fill="none" stroke="#00695c" stroke-width="3" opacity="0.4"/>
+  <circle cx="300" cy="70" r="24" fill="none" stroke="#00695c" stroke-width="3" opacity="0.6"/>
+  <circle cx="300" cy="70" r="12" fill="#00695c"/>
+  <circle cx="300" cy="70" r="6" fill="#e0f2f1"/>
+  <line x1="248" y1="70" x2="352" y2="70" stroke="#00695c" stroke-width="2" opacity="0.4"/>
+  <line x1="300" y1="18" x2="300" y2="122" stroke="#00695c" stroke-width="2" opacity="0.4"/>
+  <circle cx="185" cy="38" r="14" fill="#00695c"/>
+  <text x="185" y="43" text-anchor="middle" fill="#e0f2f1" font-size="14" font-weight="bold">W</text>
+  <line x1="197" y1="44" x2="290" y2="66" stroke="#00695c" stroke-width="2" stroke-dasharray="4,3" opacity="0.6"/>
+  <circle cx="415" cy="38" r="14" fill="#00695c"/>
+  <text x="415" y="43" text-anchor="middle" fill="#e0f2f1" font-size="11" font-weight="bold">@</text>
+  <line x1="403" y1="44" x2="312" y2="66" stroke="#00695c" stroke-width="2" stroke-dasharray="4,3" opacity="0.6"/>
+  <circle cx="185" cy="102" r="14" fill="#00897b"/>
+  <text x="185" y="107" text-anchor="middle" fill="#e0f2f1" font-size="11" font-weight="bold">PC</text>
+  <line x1="197" y1="96" x2="290" y2="74" stroke="#00695c" stroke-width="2" stroke-dasharray="4,3" opacity="0.6"/>
+  <circle cx="415" cy="102" r="14" fill="#00897b"/>
+  <text x="415" y="107" text-anchor="middle" fill="#e0f2f1" font-size="10" font-weight="bold">📱</text>
+  <line x1="403" y1="96" x2="312" y2="74" stroke="#00695c" stroke-width="2" stroke-dasharray="4,3" opacity="0.6"/>
+  <circle cx="300" cy="18" r="12" fill="#00897b"/>
+  <text x="300" y="23" text-anchor="middle" fill="#e0f2f1" font-size="11" font-weight="bold">🌐</text>
+</svg></div>
+    <div class="kaart-header">
+      <div class="module-icoon" style="background:#e0f2f1;">
+        <i class="ti ti-wifi" style="color:#00695c;" aria-hidden="true"></i>
+      </div>
+      <div>
+        <div class="module-nummer" style="color:#00695c;">Module 2</div>
+        <div class="module-titel">Internet</div>
+      </div>
+    </div>
+    <div class="kaart-body">
+      <p class="module-beschrijving">Ontdek hoe internet werkt en leer veilig surfen, zoeken en websites bezoeken.</p>
+      <ul class="onderwerpen">
+        <li><i class="ti ti-check" style="color:#00695c;"></i> Wat is internet?</li>
+        <li><i class="ti ti-check" style="color:#00695c;"></i> Een browser gebruiken</li>
+        <li><i class="ti ti-check" style="color:#00695c;"></i> Zoeken met Google</li>
+        <li><i class="ti ti-check" style="color:#00695c;"></i> Betrouwbare websites herkennen</li>
+      </ul>
+    </div>
+    <div class="kaart-footer">
+      <span class="niveau-label" style="background:#e0f2f1; color:#004d40;">Beginners</span>
+      <button class="start-knop" style="background:#00695c;" onclick="alert('Module 2: Internet wordt binnenkort geopend!')">
+        Start module <i class="ti ti-arrow-right"></i>
+      </button>
+    </div>
+  </article>
+
+  <!-- MODULE 3: E-MAIL -->
+  <article class="module-kaart" id="module3">
+    <div class="module-banner"><svg viewBox="0 0 600 140" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="140" fill="#fff3e0"/>
+  <rect x="160" y="30" width="280" height="80" rx="10" fill="#e65100"/>
+  <rect x="164" y="34" width="272" height="72" rx="8" fill="#fff8f0"/>
+  <polyline points="164,34 300,95 436,34" fill="none" stroke="#e65100" stroke-width="3"/>
+  <line x1="164" y1="106" x2="230" y2="72" stroke="#e65100" stroke-width="2" opacity="0.4"/>
+  <line x1="436" y1="106" x2="370" y2="72" stroke="#e65100" stroke-width="2" opacity="0.4"/>
+  <rect x="185" y="44" width="70" height="7" rx="3" fill="#e65100" opacity="0.5"/>
+  <rect x="185" y="56" width="110" height="5" rx="2" fill="#e65100" opacity="0.25"/>
+  <rect x="185" y="66" width="95" height="5" rx="2" fill="#e65100" opacity="0.25"/>
+  <circle cx="430" cy="38" r="22" fill="#ff8f00"/>
+  <text x="430" y="44" text-anchor="middle" fill="#fff" font-size="18" font-weight="bold">@</text>
+</svg></div>
+    <div class="kaart-header">
+      <div class="module-icoon" style="background:#fff3e0;">
+        <i class="ti ti-mail" style="color:#e65100;" aria-hidden="true"></i>
+      </div>
+      <div>
+        <div class="module-nummer" style="color:#e65100;">Module 3</div>
+        <div class="module-titel">E-mail</div>
+      </div>
+    </div>
+    <div class="kaart-body">
+      <p class="module-beschrijving">Leer een e-mailadres aanmaken, berichten versturen en ontvangen en bijlagen openen.</p>
+      <ul class="onderwerpen">
+        <li><i class="ti ti-check" style="color:#e65100;"></i> Een e-mailadres aanmaken</li>
+        <li><i class="ti ti-check" style="color:#e65100;"></i> Berichten lezen en beantwoorden</li>
+        <li><i class="ti ti-check" style="color:#e65100;"></i> Bijlagen versturen</li>
+        <li><i class="ti ti-check" style="color:#e65100;"></i> Spam herkennen</li>
+      </ul>
+    </div>
+    <div class="kaart-footer">
+      <span class="niveau-label" style="background:#fff3e0; color:#bf360c;">Gemiddeld</span>
+      <button class="start-knop" style="background:#e65100;" onclick="alert('Module 3: E-mail wordt binnenkort geopend!')">
+        Start module <i class="ti ti-arrow-right"></i>
+      </button>
+    </div>
+  </article>
+
+  <!-- MODULE 4: VEILIGHEID -->
+  <article class="module-kaart" id="module4">
+    <div class="module-banner"><svg viewBox="0 0 600 140" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="140" fill="#ffebee"/>
+  <path d="M300 15 L370 42 L370 88 Q370 118 300 132 Q230 118 230 88 L230 42 Z" fill="#c62828"/>
+  <path d="M300 26 L358 49 L358 88 Q358 112 300 124 Q242 112 242 88 L242 49 Z" fill="#ef5350"/>
+  <rect x="282" y="58" width="36" height="28" rx="5" fill="#c62828"/>
+  <rect x="276" y="68" width="48" height="32" rx="6" fill="#fff"/>
+  <circle cx="300" cy="80" r="6" fill="#c62828"/>
+  <rect x="298" y="80" width="4" height="10" rx="2" fill="#c62828"/>
+  <path d="M280 58 Q280 44 300 44 Q320 44 320 58" fill="none" stroke="#c62828" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="175" cy="50" r="18" fill="#e53935" opacity="0.2"/>
+  <text x="175" y="56" text-anchor="middle" fill="#c62828" font-size="18">🔑</text>
+  <circle cx="425" cy="50" r="18" fill="#e53935" opacity="0.2"/>
+  <text x="425" y="56" text-anchor="middle" fill="#c62828" font-size="18">👁</text>
+  <circle cx="155" cy="100" r="14" fill="#e53935" opacity="0.2"/>
+  <text x="155" y="106" text-anchor="middle" fill="#c62828" font-size="14">⚠️</text>
+  <circle cx="445" cy="100" r="14" fill="#e53935" opacity="0.2"/>
+  <text x="445" y="106" text-anchor="middle" fill="#c62828" font-size="14">✅</text>
+</svg></div>
+    <div class="kaart-header">
+      <div class="module-icoon" style="background:#ffebee;">
+        <i class="ti ti-shield-check" style="color:#c62828;" aria-hidden="true"></i>
+      </div>
+      <div>
+        <div class="module-nummer" style="color:#c62828;">Module 4</div>
+        <div class="module-titel">Veiligheid</div>
+      </div>
+    </div>
+    <div class="kaart-body">
+      <p class="module-beschrijving">Bescherm uzelf online. Leer over sterke wachtwoorden, oplichting en veilig bankieren.</p>
+      <ul class="onderwerpen">
+        <li><i class="ti ti-check" style="color:#c62828;"></i> Sterke wachtwoorden maken</li>
+        <li><i class="ti ti-check" style="color:#c62828;"></i> Phishing en oplichting herkennen</li>
+        <li><i class="ti ti-check" style="color:#c62828;"></i> Veilig online bankieren</li>
+        <li><i class="ti ti-check" style="color:#c62828;"></i> Privacy instellingen</li>
+      </ul>
+    </div>
+    <div class="kaart-footer">
+      <span class="niveau-label" style="background:#ffebee; color:#b71c1c;">Belangrijk</span>
+      <button class="start-knop" style="background:#c62828;" onclick="alert('Module 4: Veiligheid wordt binnenkort geopend!')">
+        Start module <i class="ti ti-arrow-right"></i>
+      </button>
+    </div>
+  </article>
+
+  <!-- MODULE 5: OVERHEID & DIGID -->
+  <article class="module-kaart" id="module5">
+    <div class="module-banner"><svg viewBox="0 0 600 140" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="140" fill="#f3e5f5"/>
+  <rect x="220" y="80" width="160" height="55" rx="0" fill="#6a1b9a"/>
+  <rect x="232" y="80" width="26" height="35" rx="2" fill="#ce93d8"/>
+  <rect x="268" y="80" width="26" height="35" rx="2" fill="#ce93d8"/>
+  <rect x="304" y="80" width="26" height="35" rx="2" fill="#ce93d8"/>
+  <rect x="340" y="80" width="26" height="35" rx="2" fill="#ce93d8"/>
+  <rect x="210" y="70" width="180" height="14" rx="2" fill="#7b1fa2"/>
+  <polygon points="300,18 370,70 230,70" fill="#8e24aa"/>
+  <rect x="285" y="40" width="30" height="30" rx="15" fill="#f3e5f5"/>
+  <text x="300" y="60" text-anchor="middle" fill="#6a1b9a" font-size="16" font-weight="bold">D</text>
+  <rect x="155" y="90" width="55" height="45" rx="4" fill="#ab47bc" opacity="0.4"/>
+  <rect x="165" y="98" width="14" height="14" rx="2" fill="#6a1b9a" opacity="0.6"/>
+  <rect x="185" y="98" width="14" height="14" rx="2" fill="#6a1b9a" opacity="0.6"/>
+  <rect x="165" y="116" width="35" height="8" rx="2" fill="#6a1b9a" opacity="0.4"/>
+  <rect x="390" y="90" width="55" height="45" rx="4" fill="#ab47bc" opacity="0.4"/>
+  <rect x="400" y="98" width="14" height="14" rx="2" fill="#6a1b9a" opacity="0.6"/>
+  <rect x="420" y="98" width="14" height="14" rx="2" fill="#6a1b9a" opacity="0.6"/>
+  <rect x="400" y="116" width="35" height="8" rx="2" fill="#6a1b9a" opacity="0.4"/>
+  <rect x="215" y="130" width="170" height="5" rx="0" fill="#4a148c" opacity="0.5"/>
+</svg></div>
+    <div class="kaart-header">
+      <div class="module-icoon" style="background:#f3e5f5;">
+        <i class="ti ti-building-bank" style="color:#6a1b9a;" aria-hidden="true"></i>
+      </div>
+      <div>
+        <div class="module-nummer" style="color:#6a1b9a;">Module 5</div>
+        <div class="module-titel">Overheid &amp; DigiD</div>
+      </div>
+    </div>
+    <div class="kaart-body">
+      <p class="module-beschrijving">Regel overheidszaken digitaal. Leer DigiD gebruiken voor belasting, zorg en uitkeringen.</p>
+      <ul class="onderwerpen">
+        <li><i class="ti ti-check" style="color:#6a1b9a;"></i> DigiD aanvragen en activeren</li>
+        <li><i class="ti ti-check" style="color:#6a1b9a;"></i> Inloggen op MijnOverheid</li>
+        <li><i class="ti ti-check" style="color:#6a1b9a;"></i> Belastingaangifte doen</li>
+        <li><i class="ti ti-check" style="color:#6a1b9a;"></i> Zorgtoeslag aanvragen</li>
+      </ul>
+    </div>
+    <div class="kaart-footer">
+      <span class="niveau-label" style="background:#f3e5f5; color:#4a148c;">Gemiddeld</span>
+      <button class="start-knop" style="background:#6a1b9a;" onclick="alert('Module 5: Overheid & DigiD wordt binnenkort geopend!')">
+        Start module <i class="ti ti-arrow-right"></i>
+      </button>
+    </div>
+  </article>
+
+  <!-- MODULE 6: SMARTPHONE -->
+  <article class="module-kaart" id="module6">
+    <div class="module-banner"><svg viewBox="0 0 600 140" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="140" fill="#e8f5e9"/>
+  <rect x="258" y="8" width="84" height="145" rx="14" fill="#2e7d32"/>
+  <rect x="263" y="18" width="74" height="115" rx="8" fill="#c8e6c9"/>
+  <rect x="288" y="10" width="24" height="5" rx="3" fill="#1b5e20"/>
+  <circle cx="300" cy="14" r="2.5" fill="#1b5e20"/>
+  <circle cx="300" cy="140" r="7" fill="#1b5e20"/>
+  <rect x="272" y="26" width="56" height="8" rx="4" fill="#2e7d32" opacity="0.4"/>
+  <rect x="272" y="40" width="24" height="24" rx="6" fill="#2e7d32" opacity="0.7"/>
+  <rect x="302" y="40" width="24" height="24" rx="6" fill="#43a047" opacity="0.7"/>
+  <rect x="272" y="70" width="24" height="24" rx="6" fill="#66bb6a" opacity="0.7"/>
+  <rect x="302" y="70" width="24" height="24" rx="6" fill="#2e7d32" opacity="0.7"/>
+  <rect x="272" y="100" width="54" height="6" rx="3" fill="#2e7d32" opacity="0.3"/>
+  <text x="284" y="57" text-anchor="middle" fill="#fff" font-size="12">💬</text>
+  <text x="314" y="57" text-anchor="middle" fill="#fff" font-size="12">📷</text>
+  <text x="284" y="87" text-anchor="middle" fill="#fff" font-size="12">🗺</text>
+  <text x="314" y="87" text-anchor="middle" fill="#fff" font-size="12">🎵</text>
+  <ellipse cx="185" cy="90" rx="45" ry="35" fill="#2e7d32" opacity="0.12"/>
+  <text x="185" y="98" text-anchor="middle" fill="#2e7d32" font-size="38">📞</text>
+  <ellipse cx="415" cy="90" rx="45" ry="35" fill="#2e7d32" opacity="0.12"/>
+  <text x="415" y="98" text-anchor="middle" fill="#2e7d32" font-size="38">📲</text>
+</svg></div>
+    <div class="kaart-header">
+      <div class="module-icoon" style="background:#e8f5e9;">
+        <i class="ti ti-device-mobile" style="color:#2e7d32;" aria-hidden="true"></i>
+      </div>
+      <div>
+        <div class="module-nummer" style="color:#2e7d32;">Module 6</div>
+        <div class="module-titel">Smartphone</div>
+      </div>
+    </div>
+    <div class="kaart-body">
+      <p class="module-beschrijving">Leer uw smartphone gebruiken voor bellen, appen, foto's maken en handige apps.</p>
+      <ul class="onderwerpen">
+        <li><i class="ti ti-check" style="color:#2e7d32;"></i> Bellen en berichten sturen</li>
+        <li><i class="ti ti-check" style="color:#2e7d32;"></i> WhatsApp gebruiken</li>
+        <li><i class="ti ti-check" style="color:#2e7d32;"></i> Foto's maken en delen</li>
+        <li><i class="ti ti-check" style="color:#2e7d32;"></i> Handige apps installeren</li>
+      </ul>
+    </div>
+    <div class="kaart-footer">
+      <span class="niveau-label" style="background:#e8f5e9; color:#1b5e20;">Beginners</span>
+      <button class="start-knop" style="background:#2e7d32;" onclick="alert('Module 6: Smartphone wordt binnenkort geopend!')">
+        Start module <i class="ti ti-arrow-right"></i>
+      </button>
+    </div>
+  </article>
+
+</main>
+
+<!-- SECTIE: MICROSOFT TOOLS -->
+<p class="sectie-titel" style="padding-top:1rem;">Microsoft-toepassingen</p>
+
+<div class="modules-grid" style="padding-top:0;">
+
+  <!-- MODULE 7: OUTLOOK -->
+  <article class="module-kaart" id="module7">
+    <div class="module-banner"><svg viewBox="0 0 600 140" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="140" fill="#e3f2fd"/>
+  <rect x="190" y="20" width="220" height="160" rx="10" fill="#0078d4"/>
+  <rect x="200" y="30" width="200" height="140" rx="7" fill="#fff"/>
+  <rect x="200" y="30" width="200" height="28" rx="7" fill="#0078d4"/>
+  <rect x="200" y="48" width="200" height="10" fill="#0078d4"/>
+  <text x="300" y="50" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">Outlook</text>
+  <rect x="208" y="65" width="184" height="1" fill="#e3f2fd" opacity="0.5"/>
+  <circle cx="218" cy="78" r="8" fill="#0078d4" opacity="0.2"/>
+  <text x="218" y="82" text-anchor="middle" fill="#0078d4" font-size="10">JA</text>
+  <rect x="232" y="73" width="80" height="5" rx="2" fill="#0078d4" opacity="0.5"/>
+  <rect x="232" y="82" width="120" height="4" rx="2" fill="#0078d4" opacity="0.2"/>
+  <rect x="208" y="93" width="184" height="0.5" fill="#e0e0e0"/>
+  <circle cx="218" cy="106" r="8" fill="#0364b8" opacity="0.2"/>
+  <text x="218" y="110" text-anchor="middle" fill="#0364b8" font-size="10">MA</text>
+  <rect x="232" y="101" width="95" height="5" rx="2" fill="#0078d4" opacity="0.5"/>
+  <rect x="232" y="110" width="130" height="4" rx="2" fill="#0078d4" opacity="0.2"/>
+  <rect x="208" y="121" width="184" height="0.5" fill="#e0e0e0"/>
+  <circle cx="218" cy="134" r="8" fill="#0364b8" opacity="0.2"/>
+  <text x="218" y="138" text-anchor="middle" fill="#0364b8" font-size="10">DI</text>
+  <rect x="232" y="129" width="70" height="5" rx="2" fill="#0078d4" opacity="0.5"/>
+  <rect x="232" y="138" width="110" height="4" rx="2" fill="#0078d4" opacity="0.2"/>
+  <rect x="430" y="30" width="28" height="28" rx="6" fill="#0078d4" opacity="0.8"/>
+  <text x="444" y="49" text-anchor="middle" fill="#fff" font-size="18">📅</text>
+  <rect x="140" y="50" width="28" height="28" rx="6" fill="#0078d4" opacity="0.6"/>
+  <text x="154" y="69" text-anchor="middle" fill="#fff" font-size="18">📬</text>
+</svg></div>
+    <div class="kaart-header">
+      <div class="module-icoon" style="background:#e3f2fd;">
+        <i class="ti ti-mail-forward" style="color:#0078d4;" aria-hidden="true"></i>
+      </div>
+      <div>
+        <div class="module-nummer" style="color:#0078d4;">Module 7</div>
+        <div class="module-titel">Outlook</div>
+      </div>
+    </div>
+    <div class="kaart-body">
+      <p class="module-beschrijving">Leer Outlook gebruiken voor e-mail, agenda en contacten op het werk of thuis.</p>
+      <ul class="onderwerpen">
+        <li><i class="ti ti-check" style="color:#0078d4;"></i> E-mails lezen en versturen</li>
+        <li><i class="ti ti-check" style="color:#0078d4;"></i> Agenda en afspraken beheren</li>
+        <li><i class="ti ti-check" style="color:#0078d4;"></i> Contacten opslaan</li>
+        <li><i class="ti ti-check" style="color:#0078d4;"></i> Mappen en filters instellen</li>
+      </ul>
+    </div>
+    <div class="kaart-footer">
+      <span class="niveau-label" style="background:#e3f2fd; color:#01579b;">Gemiddeld</span>
+      <button class="start-knop" style="background:#0078d4;" onclick="alert('Module 7: Outlook wordt binnenkort geopend!')">
+        Start module <i class="ti ti-arrow-right"></i>
+      </button>
+    </div>
+  </article>
+
+  <!-- MODULE 8: TEAMS -->
+  <article class="module-kaart" id="module8">
+    <div class="module-banner"><svg viewBox="0 0 600 140" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="140" fill="#ede7f6"/>
+  <rect x="160" y="20" width="280" height="100" rx="12" fill="#5c2d91"/>
+  <rect x="168" y="28" width="264" height="84" rx="8" fill="#1a0033"/>
+  <circle cx="215" cy="55" r="18" fill="#7b3fc4"/>
+  <text x="215" y="61" text-anchor="middle" fill="#fff" font-size="14">😊</text>
+  <text x="215" y="78" text-anchor="middle" fill="#d0a8ff" font-size="9">Anna</text>
+  <circle cx="270" cy="48" r="18" fill="#6929c4"/>
+  <text x="270" y="54" text-anchor="middle" fill="#fff" font-size="14">🙂</text>
+  <text x="270" y="71" text-anchor="middle" fill="#d0a8ff" font-size="9">Jan</text>
+  <circle cx="325" cy="55" r="18" fill="#491d8b"/>
+  <text x="325" y="61" text-anchor="middle" fill="#fff" font-size="14">😄</text>
+  <text x="325" y="78" text-anchor="middle" fill="#d0a8ff" font-size="9">Piet</text>
+  <circle cx="380" cy="48" r="18" fill="#7b3fc4"/>
+  <text x="380" y="54" text-anchor="middle" fill="#fff" font-size="14">👩</text>
+  <text x="380" y="71" text-anchor="middle" fill="#d0a8ff" font-size="9">Lisa</text>
+  <rect x="185" y="88" width="230" height="16" rx="8" fill="#7b3fc4" opacity="0.4"/>
+  <text x="300" y="100" text-anchor="middle" fill="#d0a8ff" font-size="10">Videovergadering bezig...</text>
+  <circle cx="185" cy="96" r="8" fill="#5c2d91"/>
+  <text x="185" y="100" text-anchor="middle" fill="#fff" font-size="9">🎤</text>
+  <circle cx="415" cy="96" r="8" fill="#5c2d91"/>
+  <text x="415" y="100" text-anchor="middle" fill="#fff" font-size="9">📷</text>
+  <text x="300" y="130" text-anchor="middle" fill="#7b3fc4" font-size="11" font-weight="bold">Microsoft Teams</text>
+</svg></div>
+    <div class="kaart-header">
+      <div class="module-icoon" style="background:#ede7f6;">
+        <i class="ti ti-users" style="color:#5c2d91;" aria-hidden="true"></i>
+      </div>
+      <div>
+        <div class="module-nummer" style="color:#5c2d91;">Module 8</div>
+        <div class="module-titel">Microsoft Teams</div>
+      </div>
+    </div>
+    <div class="kaart-body">
+      <p class="module-beschrijving">Vergader, chat en werk samen via Teams. Handig voor thuis én op het werk.</p>
+      <ul class="onderwerpen">
+        <li><i class="ti ti-check" style="color:#5c2d91;"></i> Chatten met collega's</li>
+        <li><i class="ti ti-check" style="color:#5c2d91;"></i> Videovergadering starten</li>
+        <li><i class="ti ti-check" style="color:#5c2d91;"></i> Bestanden delen in Teams</li>
+        <li><i class="ti ti-check" style="color:#5c2d91;"></i> Kanalen aanmaken en gebruiken</li>
+      </ul>
+    </div>
+    <div class="kaart-footer">
+      <span class="niveau-label" style="background:#ede7f6; color:#4527a0;">Gemiddeld</span>
+      <button class="start-knop" style="background:#5c2d91;" onclick="alert('Module 8: Microsoft Teams wordt binnenkort geopend!')">
+        Start module <i class="ti ti-arrow-right"></i>
+      </button>
+    </div>
+  </article>
+
+  <!-- MODULE 9: ONEDRIVE -->
+  <article class="module-kaart" id="module9">
+    <div class="module-banner"><svg viewBox="0 0 600 140" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="140" fill="#e1f5fe"/>
+  <ellipse cx="300" cy="52" rx="95" ry="42" fill="#0364b8" opacity="0.15"/>
+  <ellipse cx="245" cy="62" rx="70" ry="32" fill="#0364b8" opacity="0.2"/>
+  <ellipse cx="355" cy="58" rx="80" ry="36" fill="#0078d4" opacity="0.2"/>
+  <path d="M175 88 Q175 58 245 58 Q255 35 300 35 Q345 35 360 55 Q395 48 420 68 Q445 65 445 88 Z" fill="#0078d4"/>
+  <path d="M178 88 Q178 61 246 61 Q256 39 300 39 Q343 39 357 58 Q392 51 418 70 Q442 67 442 88 Z" fill="#0364b8" opacity="0.7"/>
+  <rect x="272" y="78" width="56" height="4" rx="2" fill="#fff" opacity="0.5"/>
+  <line x1="250" y1="100" x2="250" y2="130" stroke="#0364b8" stroke-width="2" stroke-dasharray="4,3" opacity="0.6"/>
+  <line x1="300" y1="100" x2="300" y2="125" stroke="#0364b8" stroke-width="2" stroke-dasharray="4,3" opacity="0.6"/>
+  <line x1="350" y1="100" x2="350" y2="130" stroke="#0364b8" stroke-width="2" stroke-dasharray="4,3" opacity="0.6"/>
+  <rect x="226" y="118" width="48" height="22" rx="5" fill="#0078d4"/>
+  <text x="250" y="133" text-anchor="middle" fill="#fff" font-size="10">📄 doc</text>
+  <rect x="276" y="113" width="48" height="22" rx="5" fill="#0364b8"/>
+  <text x="300" y="128" text-anchor="middle" fill="#fff" font-size="10">🖼 foto</text>
+  <rect x="326" y="118" width="48" height="22" rx="5" fill="#0078d4"/>
+  <text x="350" y="133" text-anchor="middle" fill="#fff" font-size="10">📊 xls</text>
+  <text x="300" y="22" text-anchor="middle" fill="#0364b8" font-size="12" font-weight="bold">☁ Uw bestanden in de cloud</text>
+</svg></div>
+    <div class="kaart-header">
+      <div class="module-icoon" style="background:#e1f5fe;">
+        <i class="ti ti-cloud" style="color:#0364b8;" aria-hidden="true"></i>
+      </div>
+      <div>
+        <div class="module-nummer" style="color:#0364b8;">Module 9</div>
+        <div class="module-titel">OneDrive</div>
+      </div>
+    </div>
+    <div class="kaart-body">
+      <p class="module-beschrijving">Sla bestanden veilig op in de cloud. Bereik uw documenten overal en deel ze eenvoudig.</p>
+      <ul class="onderwerpen">
+        <li><i class="ti ti-check" style="color:#0364b8;"></i> Bestanden uploaden en opslaan</li>
+        <li><i class="ti ti-check" style="color:#0364b8;"></i> Documenten delen met anderen</li>
+        <li><i class="ti ti-check" style="color:#0364b8;"></i> Samenwerken aan bestanden</li>
+        <li><i class="ti ti-check" style="color:#0364b8;"></i> OneDrive op smartphone gebruiken</li>
+      </ul>
+    </div>
+    <div class="kaart-footer">
+      <span class="niveau-label" style="background:#e1f5fe; color:#01579b;">Gemiddeld</span>
+      <button class="start-knop" style="background:#0364b8;" onclick="alert('Module 9: OneDrive wordt binnenkort geopend!')">
+        Start module <i class="ti ti-arrow-right"></i>
+      </button>
+    </div>
+  </article>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p><strong>Digitale Vaardigheden</strong> — een leerplatform voor iedereen</p>
+  <p style="margin-top:0.4rem;">Vragen? Neem contact op met uw bibliotheek of buurtcentrum.</p>
+</footer>
+
+</body>
+</html>
