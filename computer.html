@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Computer - Les 1</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+  :root{
+    --blauw:#1a73e8;
+    --blauw-donker:#0d47a1;
+    --blauw-licht:#e8f0fe;
+    --groen:#2e7d32;
+    --groen-licht:#e8f5e9;
+    --rood:#c62828;
+    --rood-licht:#ffebee;
+    --geel:#f9a825;
+    --geel-licht:#fff8e1;
+    --tekst:#1a1a1a;
+    --wit:#fff;
+    --rand:#dadada;
+  }
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    font-family:'Segoe UI', Arial, sans-serif;
+    background:#f5f7fa;
+    color:var(--tekst);
+    line-height:1.6;
+    font-size:18px; /* groter voor leesbaarheid */
+    padding-bottom:4rem;
+  }
+
+  /* TOPBALK */
+  .topbar{
+    background:var(--blauw-donker);
+    color:#fff;
+    padding:1rem 1.5rem;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:0.75rem;
+    position:sticky;
+    top:0;
+    z-index:50;
+  }
+
+  .terug-link{
+    color:#fff;
+    text-decoration:none;
+    font-size:1rem;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    background:rgba(255,255,255,0.15);
+    padding:8px 16px;
+    border-radius:8px;
+    transition:background 0.15s;
+  }
+  .terug-link:hover{background:rgba(255,255,255,0.28);}
+
+  .topbar h1{
+    font-size:1.3rem;
+    text-align:center;
+  }
+
+  .voortgang-mini{
+    background:rgba(255,255,255,0.2);
+    border-radius:10px;
+    padding:6px 14px;
+    font-size:0.9rem;
+    font-weight:600;
+  }
+
+  /* PROGRESS BAR */
+  .progress-wrap{
+    max-width:700px;
+    margin:1.25rem auto 0;
+    padding:0 1.25rem;
+  }
+  .progress-track{
+    height:14px;
+    background:var(--rand);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;
+    background:linear-gradient(90deg,var(--blauw),var(--groen));
+    width:0%;
+    transition:width 0.4s ease;
+    border-radius:10px;
+  }
+
+  main{
+    max-width:700px;
+    margin:0 auto;
+    padding:1.5rem 1.25rem;
+  }
+
+  /* INTRO KAART */
+  .intro-kaart{
+    background:var(--wit);
+    border-radius:18px;
+    padding:2rem 1.5rem;
+    text-align:center;
+    box-shadow:0 4px 16px rgba(0,0,0,0.06);
+    margin-bottom:2rem;
+  }
+
+  .intro-kaart .icoon-groot{
+    font-size:4rem;
+    margin-bottom:1rem;
+  }
+
+  .intro-kaart h2{
+    font-size:1.6rem;
+    color:var(--blauw-donker);
+    margin-bottom:0.75rem;
+  }
+
+  .intro-kaart p{
+    font-size:1.1rem;
+    color:#444;
+  }
+
+  /* OEFENING KAART */
+  .oefening{
+    background:var(--wit);
+    border-radius:18px;
+    padding:1.75rem;
+    margin-bottom:1.75rem;
+    box-shadow:0 4px 16px rgba(0,0,0,0.06);
+    border:2px solid transparent;
+    transition:border-color 0.2s;
+    display:none;
+  }
+
+  .oefening.actief{display:block;}
+
+  .oefening-label{
+    display:inline-block;
+    background:var(--blauw-licht);
+    color:var(--blauw-donker);
+    font-size:0.85rem;
+    font-weight:700;
+    padding:4px 12px;
+    border-radius:20px;
+    margin-bottom:1rem;
+  }
+
+  .oefening h3{
+    font-size:1.35rem;
+    margin-bottom:1.25rem;
+    color:var(--tekst);
+  }
+
+  /* AFBEELDING IN OEFENING */
+  .oef-afbeelding{
+    width:100%;
+    border-radius:12px;
+    margin-bottom:1.25rem;
+    overflow:hidden;
+    background:var(--blauw-licht);
+  }
+  .oef-afbeelding svg{width:100%;height:auto;display:block;}
+
+  /* ANTWOORD KNOPPEN */
+  .antwoorden{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:0.9rem;
+  }
+
+  @media (max-width:480px){
+    .antwoorden{grid-template-columns:1fr;}
+  }
+
+  .antwoord-knop{
+    background:var(--wit);
+    border:2.5px solid var(--rand);
+    border-radius:14px;
+    padding:1rem;
+    font-size:1.1rem;
+    font-weight:600;
+    color:var(--tekst);
+    cursor:pointer;
+    transition:all 0.15s;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:0.4rem;
+    min-height:90px;
+    justify-content:center;
+  }
+
+  .antwoord-knop .emoji{font-size:1.8rem;}
+
+  .antwoord-knop:hover{
+    border-color:var(--blauw);
+    background:var(--blauw-licht);
+    transform:translateY(-2px);
+  }
+
+  .antwoord-knop:disabled{cursor:default;}
+  .antwoord-knop:disabled:hover{transform:none;}
+
+  .antwoord-knop.goed{
+    background:var(--groen-licht);
+    border-color:var(--groen);
+    color:var(--groen);
+  }
+
+  .antwoord-knop.fout{
+    background:var(--rood-licht);
+    border-color:var(--rood);
+    color:var(--rood);
+  }
+
+  /* FEEDBACK */
+  .feedback{
+    margin-top:1.25rem;
+    padding:1rem 1.25rem;
+    border-radius:12px;
+    font-size:1.05rem;
+    font-weight:600;
+    display:none;
+    align-items:center;
+    gap:10px;
+  }
+
+  .feedback.tonen{display:flex;}
+
+  .feedback.goed-fb{
+    background:var(--groen-licht);
+    color:var(--groen);
+  }
+
+  .feedback.fout-fb{
+    background:var(--rood-licht);
+    color:var(--rood);
+  }
+
+  .feedback .fb-emoji{font-size:1.6rem;}
+
+  /* VERDER KNOP */
+  .verder-knop{
+    margin-top:1.5rem;
+    width:100%;
+    background:var(--blauw);
+    color:#fff;
+    border:none;
+    border-radius:12px;
+    padding:1rem;
+    font-size:1.15rem;
+    font-weight:700;
+    cursor:pointer;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    transition:background 0.15s;
+  }
+  .verder-knop.tonen{display:flex;}
+  .verder-knop:hover{background:var(--blauw-donker);}
+
+  /* HERHAAL KNOP bij fout antwoord */
+  .opnieuw-knop{
+    margin-top:1rem;
+    width:100%;
+    background:var(--wit);
+    color:var(--rood);
+    border:2px solid var(--rood);
+    border-radius:12px;
+    padding:0.85rem;
+    font-size:1.05rem;
+    font-weight:700;
+    cursor:pointer;
+    display:none;
+  }
+  .opnieuw-knop.tonen{display:block;}
+
+  /* EINDSCHERM */
+  .eind-kaart{
+    background:linear-gradient(135deg,var(--groen),#43a047);
+    color:#fff;
+    border-radius:18px;
+    padding:2.5rem 1.5rem;
+    text-align:center;
+    display:none;
+  }
+  .eind-kaart.tonen{display:block;}
+
+  .eind-kaart .trofee{
+    font-size:4.5rem;
+    margin-bottom:1rem;
+  }
+
+  .eind-kaart h2{
+    font-size:1.8rem;
+    margin-bottom:0.75rem;
+  }
+
+  .eind-kaart p{
+    font-size:1.15rem;
+    margin-bottom:1.5rem;
+    opacity:0.95;
+  }
+
+  .eind-knoppen{
+    display:flex;
+    gap:0.75rem;
+    justify-content:center;
+    flex-wrap:wrap;
+  }
+
+  .eind-knop{
+    background:#fff;
+    color:var(--groen);
+    border:none;
+    border-radius:10px;
+    padding:0.9rem 1.5rem;
+    font-size:1.05rem;
+    font-weight:700;
+    cursor:pointer;
+    text-decoration:none;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+  }
+
+  .eind-knop.outline{
+    background:transparent;
+    color:#fff;
+    border:2px solid #fff;
+  }
+
+  /* SCORE STERREN */
+  .sterren{
+    display:flex;
+    justify-content:center;
+    gap:0.5rem;
+    margin-bottom:1.5rem;
+    font-size:2.2rem;
+  }
+
+  /* START KNOP */
+  .start-les-knop{
+    background:var(--blauw);
+    color:#fff;
+    border:none;
+    border-radius:14px;
+    padding:1rem 2.5rem;
+    font-size:1.2rem;
+    font-weight:700;
+    cursor:pointer;
+    margin-top:1.5rem;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+  }
+  .start-les-knop:hover{background:var(--blauw-donker);}
+  /* VIDEO SECTIE */
+  .video-sectie{background:#fff; border-radius:18px; padding:1.75rem; margin-bottom:1.75rem; box-shadow:0 4px 16px rgba(0,0,0,0.06); display:none;}
+  .video-sectie.tonen{display:block;}
+  .video-sectie h3{font-size:1.25rem; color:#0d47a1; margin-bottom:0.5rem; display:flex; align-items:center; gap:8px;}
+  .video-sectie p{font-size:1rem; color:#555; margin-bottom:1.25rem;}
+  .video-label{display:inline-block; background:#e8f0fe; color:#0d47a1; font-size:0.82rem; font-weight:700; padding:3px 10px; border-radius:20px; margin-bottom:0.6rem;}
+  .video-beschrijving{font-size:0.95rem; color:#444; margin-bottom:1.5rem; padding:0.75rem 1rem; background:#f8f9fa; border-left:4px solid #1a73e8; border-radius:0 8px 8px 0;}
+  .video-verder-knop{width:100%; background:#1a73e8; color:#fff; border:none; border-radius:12px; padding:1rem; font-size:1.1rem; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:background 0.15s; margin-top:0.5rem;}
+  .video-verder-knop:hover{background:#0d47a1;}
+  .video-link-knop{display:block; text-decoration:none; margin-bottom:0.75rem;}
+  .video-thumb{position:relative; border-radius:12px; overflow:hidden; background:#000; line-height:0;}
+  .video-thumb img{width:100%; display:block; opacity:0.92; transition:opacity 0.15s;}
+  .video-link-knop:hover .video-thumb img{opacity:1;}
+  .play-overlay{position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(0,0,0,0.72); color:#fff; font-size:2.2rem; width:70px; height:70px; border-radius:50%; display:flex; align-items:center; justify-content:center; padding-left:6px; transition:background 0.15s;}
+  .video-link-knop:hover .play-overlay{background:#ff0000;}
+
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="index.html" class="terug-link">← Terug</a>
+  <h1>💻 Computer - Les 1</h1>
+  <div class="voortgang-mini" id="voortgangTeller">0 / 6</div>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-track">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+</div>
+
+<main>
+
+  <!-- INTRO -->
+  <section class="intro-kaart" id="introScherm">
+    <div class="icoon-groot">💻</div>
+    <h2>Welkom!</h2>
+    <p>In deze les leert u de computer kennen.<br>
+    U ziet plaatjes. U klikt op het goede antwoord.<br>
+    Het is niet moeilijk. Veel succes!</p>
+    <button class="start-les-knop" onclick="startLes()">Start ▶</button>
+  </section>
+
+
+  <!-- VIDEO SECTIE -->
+  <section class="video-sectie" id="videoScherm">
+    <h3>🎬 Bekijk eerst deze filmpjes</h3>
+    <p>Klik op een filmpje. Het opent op YouTube.<br>Kom daarna terug en doe de oefeningen.</p>
+
+    <span class="video-label">Filmpje 1</span>
+    <a href="https://www.youtube.com/watch?v=oIyHxcC0DaA" target="_blank" class="video-link-knop">
+      <div class="video-thumb">
+        <img src="https://img.youtube.com/vi/oIyHxcC0DaA/hqdefault.jpg" alt="Windows 10 deel 1" loading="lazy">
+        <div class="play-overlay">▶</div>
+      </div>
+    </a>
+    <div class="video-beschrijving">
+      📺 <strong>Windows 10 — deel 1</strong><br>
+      Leer wat u allemaal kunt doen met Windows op uw computer. Gemakkelijk uitgelegd.
+    </div>
+
+    <span class="video-label">Filmpje 2</span>
+    <a href="https://www.youtube.com/watch?v=_uuClawvhYY" target="_blank" class="video-link-knop">
+      <div class="video-thumb">
+        <img src="https://img.youtube.com/vi/_uuClawvhYY/hqdefault.jpg" alt="Webinar Windows 11 SeniorWeb" loading="lazy">
+        <div class="play-overlay">▶</div>
+      </div>
+    </a>
+    <div class="video-beschrijving">
+      📺 <strong>Windows 11 uitleg — SeniorWeb</strong><br>
+      SeniorWeb legt uit hoe Windows 11 werkt. Stap voor stap, rustig uitgelegd.
+    </div>
+
+    <button class="video-verder-knop" onclick="startOefeningen()">
+      ✏️ Nu de oefeningen doen
+    </button>
+  </section>
+
+  <!-- OEFENING 1: Wat is dit? Monitor -->
+  <section class="oefening" data-nr="1">
+    <span class="oefening-label">Vraag 1 van 6</span>
+    <h3>Wat is dit?</h3>
+    <div class="oef-afbeelding">
+      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
+        <rect width="400" height="220" fill="#e8f0fe"/>
+        <rect x="120" y="30" width="160" height="110" rx="8" fill="#1a73e8"/>
+        <rect x="130" y="40" width="140" height="85" rx="4" fill="#fff"/>
+        <rect x="190" y="142" width="20" height="14" fill="#1565c0"/>
+        <rect x="160" y="158" width="80" height="8" rx="4" fill="#1565c0"/>
+        <line x1="150" y1="65" x2="250" y2="65" stroke="#1a73e8" stroke-width="3" opacity="0.3"/>
+        <line x1="150" y1="80" x2="230" y2="80" stroke="#1a73e8" stroke-width="3" opacity="0.3"/>
+        <line x1="150" y1="95" x2="240" y2="95" stroke="#1a73e8" stroke-width="3" opacity="0.3"/>
+      </svg>
+    </div>
+    <div class="antwoorden">
+      <button class="antwoord-knop" data-goed="false" onclick="checkAntwoord(this,1)"><span class="emoji">⌨️</span>Toetsenbord</button>
+      <button class="antwoord-knop" data-goed="true" onclick="checkAntwoord(this,1)"><span class="emoji">🖥️</span>Scherm</button>
+      <button class="antwoord-knop" data-goed="false" onclick="checkAntwoord(this,1)"><span class="emoji">🖱️</span>Muis</button>
+      <button class="antwoord-knop" data-goed="false" onclick="checkAntwoord(this,1)"><span class="emoji">🔌</span>Stekker</button>
+    </div>
+    <div class="feedback" id="feedback1"></div>
+    <button class="opnieuw-knop" id="opnieuw1" onclick="resetOefening(1)">Probeer opnieuw</button>
+    <button class="verder-knop" onclick="volgendeOefening(1)">Volgende ▶</button>
+  </section>
+
+  <!-- OEFENING 2: Toetsenbord -->
+  <section class="oefening" data-nr="2">
+    <span class="oefening-label">Vraag 2 van 6</span>
+    <h3>Wat is dit?</h3>
+    <div class="oef-afbeelding">
+      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
+        <rect width="400" height="220" fill="#e8f0fe"/>
+        <rect x="70" y="70" width="260" height="80" rx="10" fill="#1565c0"/>
+        <rect x="80" y="78" width="240" height="64" rx="6" fill="#1a73e8" opacity="0.3"/>
+        <rect x="90" y="84" width="16" height="14" rx="3" fill="#fff" opacity="0.8"/>
+        <rect x="112" y="84" width="16" height="14" rx="3" fill="#fff" opacity="0.8"/>
+        <rect x="134" y="84" width="16" height="14" rx="3" fill="#fff" opacity="0.8"/>
+        <rect x="156" y="84" width="16" height="14" rx="3" fill="#fff" opacity="0.8"/>
+        <rect x="178" y="84" width="16" height="14" rx="3" fill="#fff" opacity="0.8"/>
+        <rect x="200" y="84" width="16" height="14" rx="3" fill="#fff" opacity="0.8"/>
+        <rect x="222" y="84" width="16" height="14" rx="3" fill="#fff" opacity="0.8"/>
+        <rect x="244" y="84" width="16" height="14" rx="3" fill="#fff" opacity="0.8"/>
+        <rect x="266" y="84" width="16" height="14" rx="3" fill="#fff" opacity="0.8"/>
+        <rect x="98" y="102" width="16" height="14" rx="3" fill="#fff" opacity="0.6"/>
+        <rect x="120" y="102" width="16" height="14" rx="3" fill="#fff" opacity="0.6"/>
+        <rect x="142" y="102" width="16" height="14" rx="3" fill="#fff" opacity="0.6"/>
+        <rect x="164" y="102" width="16" height="14" rx="3" fill="#fff" opacity="0.6"/>
+        <rect x="186" y="102" width="16" height="14" rx="3" fill="#fff" opacity="0.6"/>
+        <rect x="208" y="102" width="16" height="14" rx="3" fill="#fff" opacity="0.6"/>
+        <rect x="230" y="102" width="16" height="14" rx="3" fill="#fff" opacity="0.6"/>
+        <rect x="252" y="102" width="34" height="14" rx="3" fill="#fff" opacity="0.6"/>
+        <rect x="130" y="122" width="140" height="14" rx="4" fill="#fff" opacity="0.6"/>
+      </svg>
+    </div>
+    <div class="antwoorden">
+      <button class="antwoord-knop" data-goed="true" onclick="checkAntwoord(this,2)"><span class="emoji">⌨️</span>Toetsenbord</button>
+      <button class="antwoord-knop" data-goed="false" onclick="checkAntwoord(this,2)"><span class="emoji">🖥️</span>Scherm</button>
+      <button class="antwoord-knop" data-goed="false" onclick="checkAntwoord(this,2)"><span class="emoji">🖱️</span>Muis</button>
+      <button class="antwoord-knop" data-goed="false" onclick="checkAntwoord(this,2)"><span class="emoji">📱</span>Telefoon</button>
+    </div>
+    <div class="feedback" id="feedback2"></div>
+    <button class="opnieuw-knop" id="opnieuw2" onclick="resetOefening(2)">Probeer opnieuw</button>
+    <button class="verder-knop" onclick="volgendeOefening(2)">Volgende ▶</button>
+  </section>
+
+  <!-- OEFENING 3: Muis -->
+  <section class="oefening" data-nr="3">
+    <span class="oefening-label">Vraag 3 van 6</span>
+    <h3>Wat is dit?</h3>
+    <div class="oef-afbeelding">
+      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
+        <rect width="400" height="220" fill="#e8f0fe"/>
+        <rect x="160" y="60" width="80" height="110" rx="40" fill="#1565c0"/>
+        <line x1="200" y1="60" x2="200" y2="100" stroke="#e8f0fe" stroke-width="3"/>
+        <rect x="190" y="75" width="20" height="16" rx="8" fill="#e8f0fe" opacity="0.6"/>
+      </svg>
+    </div>
+    <div class="antwoorden">
+      <button class="antwoord-knop" data-goed="false" onclick="checkAntwoord(this,3)"><span class="emoji">⌨️</span>Toetsenbord</button>
+      <button class="antwoord-knop" data-goed="false" onclick="checkAntwoord(this,3)"><span class="emoji">🖥️</span>Scherm</button>
+      <button class="antwoord-knop" data-goed="true" onclick="checkAntwoord(this,3)"><span class="emoji">🖱️</span>Muis</button>
+      <button class="antwoord-knop" data-goed="false" onclick="checkAntwoord(this,3)"><span class="emoji">🎧</span>Koptelefoon</button>
+    </div>
+    <div class="feedback" id="feedback3"></div>
+    <button class="opnieuw-knop" id="opnieuw3" onclick="resetOefening(3)">Probeer opnieuw</button>
+    <button class="verder-knop" onclick="volgendeOefening(3)">Volgende ▶</button>
+  </section>
+
+  <!-- OEFENING 4: Aan/uit knop -->
+  <section class="oefening" data-nr="4">
+    <span class="oefening-label">Vraag 4 van 6</span>
+    <h3>U wilt de computer <u>aanzetten</u>.<br>Op welke knop drukt u?</h3>
+    <div class="oef-afbeelding">
+      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
+        <rect width="400" height="220" fill="#e8f0fe"/>
+        <rect x="120" y="40" width="160" height="100" rx="8" fill="#1a73e8"/>
+        <rect x="130" y="48" width="140" height="76" rx="4" fill="#0d1117"/>
+        <circle cx="320" cy="60" r="22" fill="#fff" stroke="#1565c0" stroke-width="3"/>
+        <path d="M320 48 L320 60" stroke="#1565c0" stroke-width="3" stroke-linecap="round"/>
+        <path d="M310 52 A14 14 0 1 0 330 52" fill="none" stroke="#1565c0" stroke-width="3" stroke-linecap="round"/>
+        <text x="320" y="95" text-anchor="middle" font-size="12" fill="#1565c0" font-weight="bold">Hier?</text>
+        <circle cx="80" cy="160" r="22" fill="#fff" stroke="#999" stroke-width="3"/>
+        <text x="80" y="166" text-anchor="middle" font-size="20" fill="#999">🔊</text>
+        <circle cx="200" cy="175" r="18" fill="#fff" stroke="#999" stroke-width="3"/>
+        <text x="200" y="181" text-anchor="middle" font-size="16" fill="#999">📷</text>
+      </svg>
+    </div>
+    <div class="antwoorden">
+      <button class="antwoord-knop" data-goed="true" onclick="checkAntwoord(this,4)"><span class="emoji">⏻</span>Aan/uit-knop</button>
+      <button class="antwoord-knop" data-goed="false" onclick="checkAntwoord(this,4)"><span class="emoji">🔊</span>Volumeknop</button>
+      <button class="antwoord-knop" data-goed="false" onclick="checkAntwoord(this,4)"><span class="emoji">📷</span>Camera</button>
+    </div>
+    <div class="feedback" id="feedback4"></div>
+    <button class="opnieuw-knop" id="opnieuw4" onclick="resetOefening(4)">Probeer opnieuw</button>
+    <button class="verder-knop" onclick="volgendeOefening(4)">Volgende ▶</button>
+  </section>
+
+  <!-- OEFENING 5: Klik oefenen -->
+  <section class="oefening" data-nr="5">
+    <span class="oefening-label">Vraag 5 van 6</span>
+    <h3>Oefen klikken!<br>Klik op de <u>rode knop</u>.</h3>
+    <div style="display:flex; gap:1.5rem; justify-content:center; padding:2rem 0; flex-wrap:wrap;">
+      <button class="antwoord-knop" data-goed="false" onclick="checkAntwoord(this,5)" style="background:#1a73e8; color:#fff; border-color:#1a73e8; width:110px; height:110px; border-radius:50%;"></button>
+      <button class="antwoord-knop" data-goed="true" onclick="checkAntwoord(this,5)" style="background:#c62828; color:#fff; border-color:#c62828; width:110px; height:110px; border-radius:50%;"></button>
+      <button class="antwoord-knop" data-goed="false" onclick="checkAntwoord(this,5)" style="background:#2e7d32; color:#fff; border-color:#2e7d32; width:110px; height:110px; border-radius:50%;"></button>
+    </div>
+    <div class="feedback" id="feedback5"></div>
+    <button class="opnieuw-knop" id="opnieuw5" onclick="resetOefening(5)">Probeer opnieuw</button>
+    <button class="verder-knop" onclick="volgendeOefening(5)">Volgende ▶</button>
+  </section>
+
+  <!-- OEFENING 6: Map herkennen -->
+  <section class="oefening" data-nr="6">
+    <span class="oefening-label">Vraag 6 van 6</span>
+    <h3>Wat is dit?</h3>
+    <div class="oef-afbeelding">
+      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
+        <rect width="400" height="220" fill="#e8f0fe"/>
+        <path d="M110 75 L110 150 Q110 158 118 158 L282 158 Q290 158 290 150 L290 90 Q290 82 282 82 L200 82 L188 70 L118 70 Q110 70 110 75 Z" fill="#f9a825"/>
+        <rect x="110" y="82" width="180" height="76" rx="4" fill="#fbc02d"/>
+      </svg>
+    </div>
+    <div class="antwoorden">
+      <button class="antwoord-knop" data-goed="false" onclick="checkAntwoord(this,6)"><span class="emoji">📄</span>Bestand</button>
+      <button class="antwoord-knop" data-goed="true" onclick="checkAntwoord(this,6)"><span class="emoji">📁</span>Map</button>
+      <button class="antwoord-knop" data-goed="false" onclick="checkAntwoord(this,6)"><span class="emoji">🗑️</span>Prullenbak</button>
+      <button class="antwoord-knop" data-goed="false" onclick="checkAntwoord(this,6)"><span class="emoji">🖨️</span>Printer</button>
+    </div>
+    <div class="feedback" id="feedback6"></div>
+    <button class="opnieuw-knop" id="opnieuw6" onclick="resetOefening(6)">Probeer opnieuw</button>
+    <button class="verder-knop" onclick="volgendeOefening(6)">Klaar ▶</button>
+  </section>
+
+  <!-- EINDSCHERM -->
+  <section class="eind-kaart" id="eindScherm">
+    <div class="trofee">🏆</div>
+    <h2>Goed gedaan!</h2>
+    <div class="sterren" id="sterrenWeergave">⭐⭐⭐</div>
+    <p id="eindTekst">U kent nu de computer!</p>
+    <div class="eind-knoppen">
+      <button class="eind-knop" onclick="opnieuwBeginnen()">↻ Nog een keer</button>
+      <a href="index.html" class="eind-knop outline">← Terug naar overzicht</a>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  let huidigeOefening = 0;
+  let goedeAntwoorden = 0;
+  const totaalOefeningen = 6;
+
+  function startLes(){
+    document.getElementById('introScherm').style.display = 'none';
+    document.getElementById('videoScherm').classList.add('tonen');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  function startOefeningen(){
+    document.getElementById('videoScherm').classList.remove('tonen');
+    toonOefening(1);
+  }
+
+  function toonOefening(nr){
+    document.querySelectorAll('.oefening').forEach(o => o.classList.remove('actief'));
+    const oef = document.querySelector('.oefening[data-nr="'+nr+'"]');
+    if(oef) oef.classList.add('actief');
+    huidigeOefening = nr;
+    updateVoortgang();
+  }
+
+  function updateVoortgang(){
+    const percentage = ((huidigeOefening-1) / totaalOefeningen) * 100;
+    document.getElementById('progressFill').style.width = percentage + '%';
+    document.getElementById('voortgangTeller').textContent = (huidigeOefening-1) + ' / ' + totaalOefeningen;
+  }
+
+  function checkAntwoord(knop, oefNr){
+    const oefening = document.querySelector('.oefening[data-nr="'+oefNr+'"]');
+    const alleKnoppen = oefening.querySelectorAll('.antwoord-knop');
+    const isGoed = knop.dataset.goed === 'true';
+    const feedback = document.getElementById('feedback'+oefNr);
+    const opnieuwKnop = document.getElementById('opnieuw'+oefNr);
+    const verderKnop = oefening.querySelector('.verder-knop');
+
+    // Zet alle knoppen uit
+    alleKnoppen.forEach(k => k.disabled = true);
+
+    if(isGoed){
+      knop.classList.add('goed');
+      feedback.textContent = '';
+      feedback.classList.add('tonen','goed-fb');
+      feedback.innerHTML = '<span class="fb-emoji">✅</span> Goed zo!';
+      verderKnop.classList.add('tonen');
+      goedeAntwoorden++;
+    } else {
+      knop.classList.add('fout');
+      // Laat ook het goede antwoord zien
+      alleKnoppen.forEach(k => {
+        if(k.dataset.goed === 'true') k.classList.add('goed');
+      });
+      feedback.classList.add('tonen','fout-fb');
+      feedback.innerHTML = '<span class="fb-emoji">❌</span> Niet goed. Probeer het nog een keer.';
+      opnieuwKnop.classList.add('tonen');
+    }
+  }
+
+  function resetOefening(oefNr){
+    const oefening = document.querySelector('.oefening[data-nr="'+oefNr+'"]');
+    const alleKnoppen = oefening.querySelectorAll('.antwoord-knop');
+    const feedback = document.getElementById('feedback'+oefNr);
+    const opnieuwKnop = document.getElementById('opnieuw'+oefNr);
+
+    alleKnoppen.forEach(k => {
+      k.disabled = false;
+      k.classList.remove('goed','fout');
+    });
+    feedback.classList.remove('tonen','goed-fb','fout-fb');
+    opnieuwKnop.classList.remove('tonen');
+  }
+
+  function volgendeOefening(huidigeNr){
+    if(huidigeNr < totaalOefeningen){
+      toonOefening(huidigeNr + 1);
+    } else {
+      // Klaar - toon eindscherm
+      document.querySelector('.oefening[data-nr="'+huidigeNr+'"]').classList.remove('actief');
+      document.getElementById('progressFill').style.width = '100%';
+      document.getElementById('voortgangTeller').textContent = totaalOefeningen + ' / ' + totaalOefeningen;
+      toonEindscherm();
+    }
+  }
+
+  function toonEindscherm(){
+    const eindKaart = document.getElementById('eindScherm');
+    eindKaart.classList.add('tonen');
+
+    let sterren = '⭐⭐⭐';
+    let tekst = 'Perfect! U kent nu de computer heel goed!';
+    if(goedeAntwoorden < totaalOefeningen){
+      sterren = '⭐⭐';
+      tekst = 'Goed gedaan! Oefen nog een keer voor een topscore.';
+    }
+    if(goedeAntwoorden < totaalOefeningen - 2){
+      sterren = '⭐';
+      tekst = 'Goed geprobeerd! Oefen nog een keer.';
+    }
+    document.getElementById('sterrenWeergave').textContent = sterren;
+    document.getElementById('eindTekst').textContent = tekst;
+  }
+
+  function opnieuwBeginnen(){
+    goedeAntwoorden = 0;
+    document.getElementById('eindScherm').classList.remove('tonen');
+    document.querySelectorAll('.oefening').forEach(oef => {
+      const nr = oef.dataset.nr;
+      resetOefening(nr);
+    });
+    document.getElementById('introScherm').style.display = 'block';
+    document.getElementById('videoScherm').classList.remove('tonen');
+    document.getElementById('progressFill').style.width = '0%';
+    document.getElementById('voortgangTeller').textContent = '0 / ' + totaalOefeningen;
+  }
+</script>
+
+</body>
+</html>
